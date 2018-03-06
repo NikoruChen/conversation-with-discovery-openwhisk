@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AudioRecorder from 'react-audio-recorder';
+import { ReactMic } from 'react-mic';
 import './App.css';
 import Conversation from './Conversation.js';
 import DiscoveryResult from './DiscoveryResult.js';
@@ -15,6 +15,10 @@ class App extends Component {
 
     this.state = {
       context: {},
+      record: false,
+
+      inputText: '',
+
       // A Message Object consists of a message[, intent, date, isUser]
       messageObjectList: [],
       discoveryNumber: 0
@@ -26,7 +30,27 @@ class App extends Component {
     this.onAudioChange = this.onAudioChange.bind(this);
     // this.transcribe = this.transcribe.bind(this);
     this.getData = this.getData.bind(this);
+    this.startRecording = this.startRecording.bind(this);
+    this.stopRecording = this.stopRecording.bind(this);
+
+    this.onInputChange = this.onInputChange.bind(this);
+
   }
+
+  startRecording () {
+    this.setState({
+      record: true
+    }, ()=>{
+      console.log(this.state.record);
+    });
+  }
+
+  stopRecording () {
+    this.setState({
+      record: false
+    });
+  }
+
   //
   // transcribe(audioFile) {
   //   console.log(audioFile);
@@ -50,22 +74,24 @@ class App extends Component {
   //     });
   // }
 
+  onInputChange(e){
+    this.setState({
+      inputText: e.target.value
+    });
+  }
+
   getData(audioFile) {
-    // var reader = new FileReader();
-    // reader.onload = function(event) {
-    //   var data = event.target.result.split(',')
-    //     , decodedImageData = btoa(data[1]);                    // the actual conversion of data from binary to base64 format
-    //   callback(decodedImageData);
-    // };
-    // reader.readAsDataURL(audioFile);
-    // const transcribe = this.transcribe;
+    const upper = this;
     var reader = new FileReader();
     reader.readAsDataURL(audioFile);
     reader.onloadend = function() {
+
       // console.log(reader.result);
-      const base64 = reader.result.substring(reader.result.indexOf(',') + 1);
+
+      const base64 = reader.result.substring(reader.result.indexOf(',')+1);
+
       // console.log(base64);
-      // console.log(base64);
+      console.log(base64);
       return fetch(SPEECH_TO_TEXT_URL, {
         method: 'POST',
         headers: {
@@ -75,10 +101,19 @@ class App extends Component {
             'Basic MDJmMTJmNDQtN2YwNy00NDlmLTgwOTYtZWMyYzU4ZjA1NTE5OjU3d0tvdUI2d0k3c0NrczFGR1JZSWxMb1pVUHJFR29rS3ZPZHdzNzREem4zWFBEbmhJRnNKWmZBanFDOFVWVUw='
         },
         body: JSON.stringify({
-          content_type: 'audio/wav',
+          content_type: 'audio/webm',
           encoding: 'base64',
           payload: base64
         })
+      }).then(response=>{
+        return response.json().then((responseJson) => {
+          console.log(responseJson);
+          upper.setState({
+            inputText: responseJson.data
+          }, ()=>{
+            console.log(upper.state.inputText);
+          });
+        });
       })
         .then(response => {
           console.log(response);
@@ -93,7 +128,7 @@ class App extends Component {
   }
 
   onAudioChange(blob) {
-    console.log(blob);
+    // console.log(blob);
     // const transcribe = this.transcribe;
     // var reader = new FileReader();
     // reader.readAsDataURL(blob.audioData);
@@ -101,7 +136,8 @@ class App extends Component {
     //   console.log(reader.result);
     //   transcribe(blob.audioData);
     // };
-    this.getData(blob.audioData);
+
+    this.getData(blob.blob);
   }
 
   getSpeech(msgObj) {
@@ -212,7 +248,8 @@ class App extends Component {
   }
 
   handleSubmit(e) {
-    const inputMessage = e.target.value;
+    e.preventDefault();
+    const inputMessage = this.state.inputText;
     const inputDate = new Date();
     const formattedDate = inputDate.toLocaleTimeString();
     const msgObj = {
@@ -222,7 +259,9 @@ class App extends Component {
       hasTail: true
     };
     this.addMessage(msgObj);
-    e.target.value = '';
+    this.setState({
+      inputText:''
+    });
     this.callWatson(inputMessage);
   }
 
@@ -262,10 +301,21 @@ class App extends Component {
       <div className="app-wrapper">
         <img className="logo" src={logo} width="30%" height="2%" />
         <Conversation
+          inputText={this.state.inputText}
           onSubmit={this.handleSubmit}
           messageObjectList={this.state.messageObjectList}
+          onInputChange={this.onInputChange}
         />
-        <AudioRecorder onChange={this.onAudioChange} />
+        <div>
+          <ReactMic
+            record={this.state.record}
+            className="sound-wave"
+            onStop={this.onAudioChange}
+            strokeColor="#000000"
+            backgroundColor="#FF4081" />
+          <button onClick={this.startRecording} type="button">Start</button>
+          <button onClick={this.stopRecording} type="button">Stop</button>
+        </div>
       </div>
     );
   }

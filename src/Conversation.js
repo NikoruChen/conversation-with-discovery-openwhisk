@@ -29,11 +29,9 @@ function Conversation(props) {
         <div>{props.messageObjectList.map(makeMessage)}</div>
       </div>
       <div className="conversation__input-container">
-        <InputWithButton
-          className="conversation__input"
-          onSubmit={props.onSubmit}
-          placeholder="Say something to Watson."
-        />
+        <form onSubmit={props.onSubmit}>
+          <input onChange={props.onInputChange} value={props.inputText} placeholder="Say something to Watson."/>
+        </form>
       </div>
     </div>
   );
