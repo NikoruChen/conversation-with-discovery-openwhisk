@@ -9,7 +9,6 @@ This application shows the capabilities of Watson Conversation and Discovery ser
 * [Run Locally](#run-locally)
   * [Getting Started](#getting-started)
   * [Setting up Watson Services](#setting-up-watson-services)
-  * [Train Watson Services](#train-watson-services)
   * [Setting up the OpenWhisk Back-end](#setting-up-the-openwhisk-back-end)
   * [Setting up the React Front-end](#setting-up-the-react-front-end)
   * [Running the App](#running-the-app)
