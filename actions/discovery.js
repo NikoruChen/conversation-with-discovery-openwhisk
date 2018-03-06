@@ -33,40 +33,48 @@ function main(params) {
       var discovery = new DiscoveryV1({
         username: params.username,
         password: params.password,
-        version_date: '2017-11-07'
+        version_date: '2017-11-07',
+        url: 'https://gateway.watsonplatform.net/discovery/api/'
       });
 
-      discovery.query({environment_id: params.environment_id,
-        collection_id: params.collection_id,
-        query: params.input.text
-      }, function(err, data) {
-        if (err) {
-          return reject(err);
-        }
+      discovery.query(
+        {
+          natural_language_query: params.input.text,
+          count:2,
+          environment_id: params.environment_id,
+          collection_id: params.collection_id,
+          passages: true
+        }, function(err, data) {
+          if (err) {
+            return reject(err);
+          }
 
-        var i = 0;
-        var discoveryResults = [];
-        // var discoveryResults = data;
-        while (data.results[i] && i < 3 ) {
-          // let body = data.results[i].contentHtml;
-          // discoveryResults[i] = {
-          //   body: body,
-          //   bodySnippet: (body.length < 144 ? body : (body.substring(0,144) + '...')).replace(/<\/?[a-zA-Z]+>/g, ''),
-          //   confidence: data.results[i].score,
-          //   id: data.results[i].id,
-          //   sourceUrl: data.results[i].sourceUrl,
-          //   title: data.results[i].title
-          // };
-          discoveryResults[i] = data.results[i];
-          i++;
-        }
+          var i = 0;
+          var discoveryResults = [];
+          console.log(data);
 
-        params.output.discoveryResults = discoveryResults;
-        var conversationWithData = params;
-        delete conversationWithData.username;
-        delete conversationWithData.password;
-        return resolve(conversationWithData);
-      });
+          // var discoveryResults = data;
+          while (data.results[i] && i < 3 ) {
+            //   // let body = data.results[i].contentHtml;
+            //   // discoveryResults[i] = {
+            //   //   body: body,
+            //   //   bodySnippet: (body.length < 144 ? body : (body.substring(0,144) + '...')).replace(/<\/?[a-zA-Z]+>/g, ''),
+            //   //   confidence: data.results[i].score,
+            //   //   id: data.results[i].id,
+            //   //   sourceUrl: data.results[i].sourceUrl,
+            //   //   title: data.results[i].title
+            //   // };
+            discoveryResults[i] = data.results[i];
+            i++;
+          }
+
+          params.output.discoveryResults = discoveryResults;
+          // params.output.discoveryResults = data.results;
+          var conversationWithData = params;
+          delete conversationWithData.username;
+          delete conversationWithData.password;
+          return resolve(conversationWithData);
+        });
     } else {
       let returnJson = params;
       delete returnJson.environment_id;

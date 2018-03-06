@@ -206,6 +206,7 @@ class App extends Component {
   }
 
   handleResponse(responseJson) {
+    console.log(responseJson);
     if (
       responseJson.hasOwnProperty('output') &&
       responseJson.output.hasOwnProperty('action') &&
