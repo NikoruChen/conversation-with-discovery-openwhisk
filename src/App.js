@@ -16,6 +16,7 @@ class App extends Component {
     this.state = {
       context: {},
       record: false,
+      inputText: '',
       // A Message Object consists of a message[, intent, date, isUser]
       messageObjectList: [],
       discoveryNumber: 0
@@ -29,6 +30,7 @@ class App extends Component {
     this.getData = this.getData.bind(this);
     this.startRecording = this.startRecording.bind(this);
     this.stopRecording = this.stopRecording.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
   }
 
   startRecording () {
@@ -44,6 +46,7 @@ class App extends Component {
       record: false
     });
   }
+
   //
   // transcribe(audioFile) {
   //   console.log(audioFile);
@@ -67,13 +70,19 @@ class App extends Component {
   //     });
   // }
 
+  onInputChange(e){
+    this.setState({
+      inputText: e.target.value
+    });
+  }
+
   getData(audioFile) {
-    console.log(audioFile);
+    const upper = this;
     var reader = new FileReader();
     reader.readAsDataURL(audioFile);
     reader.onloadend = function() {
 
-      console.log(reader.result);
+      // console.log(reader.result);
       const base64 = reader.result.substring(reader.result.indexOf(',')+1);
 
       // console.log(base64);
@@ -91,6 +100,15 @@ class App extends Component {
           encoding: 'base64',
           payload: base64
         })
+      }).then(response=>{
+        return response.json().then((responseJson) => {
+          console.log(responseJson);
+          upper.setState({
+            inputText: responseJson.data
+          }, ()=>{
+            console.log(upper.state.inputText);
+          });
+        });
       })
         .then(response => {
           console.log(response);
@@ -105,7 +123,7 @@ class App extends Component {
   }
 
   onAudioChange(blob) {
-    console.log(blob);
+    // console.log(blob);
     // const transcribe = this.transcribe;
     // var reader = new FileReader();
     // reader.readAsDataURL(blob.audioData);
@@ -113,7 +131,7 @@ class App extends Component {
     //   console.log(reader.result);
     //   transcribe(blob.audioData);
     // };
-    this.getData(blob.blob);
+    return this.getData(blob.blob);
   }
 
   getSpeech(msgObj) {
@@ -224,7 +242,8 @@ class App extends Component {
   }
 
   handleSubmit(e) {
-    const inputMessage = e.target.value;
+    e.preventDefault();
+    const inputMessage = this.state.inputText;
     const inputDate = new Date();
     const formattedDate = inputDate.toLocaleTimeString();
     const msgObj = {
@@ -234,7 +253,9 @@ class App extends Component {
       hasTail: true
     };
     this.addMessage(msgObj);
-    e.target.value = '';
+    this.setState({
+      inputText:''
+    });
     this.callWatson(inputMessage);
   }
 
@@ -274,8 +295,10 @@ class App extends Component {
       <div className="app-wrapper">
         <img className="logo" src={logo} width="30%" height="2%" />
         <Conversation
+          inputText={this.state.inputText}
           onSubmit={this.handleSubmit}
           messageObjectList={this.state.messageObjectList}
+          onInputChange={this.onInputChange}
         />
 
         <div>

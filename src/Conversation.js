@@ -5,6 +5,7 @@ import Message from './Message.js';
 
 function Conversation(props) {
   function makeMessage(msgObj, index) {
+<<<<<<< HEAD
     if (typeof msgObj.message === 'string') {
       return (
         <Message
@@ -15,6 +16,12 @@ function Conversation(props) {
           message={msgObj.message}
           hasTail={msgObj.hasTail || false}
         />
+=======
+
+    if( typeof msgObj.message === 'string') {
+      return(
+        <Message key={index} position={msgObj.position || false} label={msgObj.label || false} date={msgObj.date || false} message={msgObj.message} hasTail={msgObj.hasTail || false}/>
+>>>>>>> speech to text finally
       );
     } else if (React.isValidElement(msgObj.message)) {
       return msgObj.message;
@@ -29,11 +36,9 @@ function Conversation(props) {
         <div>{props.messageObjectList.map(makeMessage)}</div>
       </div>
       <div className="conversation__input-container">
-        <InputWithButton
-          className="conversation__input"
-          onSubmit={props.onSubmit}
-          placeholder="Say something to Watson."
-        />
+        <form onSubmit={props.onSubmit}>
+          <input onChange={props.onInputChange} value={props.inputText} placeholder="Say something to Watson."/>
+        </form>
       </div>
     </div>
   );
