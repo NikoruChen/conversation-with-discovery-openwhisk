@@ -16,7 +16,9 @@ class App extends Component {
     this.state = {
       context: {},
       record: false,
+
       inputText: '',
+
       // A Message Object consists of a message[, intent, date, isUser]
       messageObjectList: [],
       discoveryNumber: 0
@@ -30,7 +32,9 @@ class App extends Component {
     this.getData = this.getData.bind(this);
     this.startRecording = this.startRecording.bind(this);
     this.stopRecording = this.stopRecording.bind(this);
+
     this.onInputChange = this.onInputChange.bind(this);
+
   }
 
   startRecording () {
@@ -83,6 +87,7 @@ class App extends Component {
     reader.onloadend = function() {
 
       // console.log(reader.result);
+
       const base64 = reader.result.substring(reader.result.indexOf(',')+1);
 
       // console.log(base64);
@@ -131,7 +136,8 @@ class App extends Component {
     //   console.log(reader.result);
     //   transcribe(blob.audioData);
     // };
-    return this.getData(blob.blob);
+
+    this.getData(blob.blob);
   }
 
   getSpeech(msgObj) {
@@ -300,7 +306,6 @@ class App extends Component {
           messageObjectList={this.state.messageObjectList}
           onInputChange={this.onInputChange}
         />
-
         <div>
           <ReactMic
             record={this.state.record}
@@ -311,7 +316,6 @@ class App extends Component {
           <button onClick={this.startRecording} type="button">Start</button>
           <button onClick={this.stopRecording} type="button">Stop</button>
         </div>
-
       </div>
     );
   }
