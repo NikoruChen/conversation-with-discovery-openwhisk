@@ -52,12 +52,6 @@ npm install
 
 2. In the Watson Console navigate to [Projects](https://console.bluemix.net/developer/watson/projects), click your newly created project, copy credentials from Project View page and paste them in to a new `credentials.json` file.
 
-### Train Watson Services
-Run following commands to train Conversation and Discovery services:
-``` bash
-  npm run train
-```
-
 ### Setting up the OpenWhisk Back-end
 1. Install the Openwhisk [Command Line Interface](https://console.bluemix.net/openwhisk/learn/cli).
 
