@@ -3,6 +3,7 @@ import { ReactMic } from 'react-mic';
 import './App.css';
 import Conversation from './Conversation.js';
 import DiscoveryResult from './DiscoveryResult.js';
+import MaterialIcon, { colorPallet } from 'material-icons-react';
 import logo from './logo.png';
 const TEXT_TO_SPEECH_URL =
   'https://openwhisk.ng.bluemix.net/api/v1/namespaces/nicole.nikoru.liu.chen%40gmail.com_dev/actions/Bluemix_text-to-speech-cs89_text-to-speech-cs89-chat-text-to-sp-1517884259798/textToSpeech?blocking=true&result=true';
@@ -34,18 +35,20 @@ class App extends Component {
     this.stopRecording = this.stopRecording.bind(this);
 
     this.onInputChange = this.onInputChange.bind(this);
-
   }
 
-  startRecording () {
-    this.setState({
-      record: true
-    }, ()=>{
-      console.log(this.state.record);
-    });
+  startRecording() {
+    this.setState(
+      {
+        record: true
+      },
+      () => {
+        console.log(this.state.record);
+      }
+    );
   }
 
-  stopRecording () {
+  stopRecording() {
     this.setState({
       record: false
     });
@@ -74,7 +77,7 @@ class App extends Component {
   //     });
   // }
 
-  onInputChange(e){
+  onInputChange(e) {
     this.setState({
       inputText: e.target.value
     });
@@ -85,10 +88,9 @@ class App extends Component {
     var reader = new FileReader();
     reader.readAsDataURL(audioFile);
     reader.onloadend = function() {
-
       // console.log(reader.result);
 
-      const base64 = reader.result.substring(reader.result.indexOf(',')+1);
+      const base64 = reader.result.substring(reader.result.indexOf(',') + 1);
 
       // console.log(base64);
       console.log(base64);
@@ -105,16 +107,20 @@ class App extends Component {
           encoding: 'base64',
           payload: base64
         })
-      }).then(response=>{
-        return response.json().then((responseJson) => {
-          console.log(responseJson);
-          upper.setState({
-            inputText: responseJson.data
-          }, ()=>{
-            console.log(upper.state.inputText);
-          });
-        });
       })
+        .then(response => {
+          return response.json().then(responseJson => {
+            console.log(responseJson);
+            upper.setState(
+              {
+                inputText: responseJson.data
+              },
+              () => {
+                console.log(upper.state.inputText);
+              }
+            );
+          });
+        })
         .then(response => {
           console.log(response);
           return response.json().then(responseJson => {
@@ -260,7 +266,7 @@ class App extends Component {
     };
     this.addMessage(msgObj);
     this.setState({
-      inputText:''
+      inputText: ''
     });
     this.callWatson(inputMessage);
   }
@@ -312,9 +318,28 @@ class App extends Component {
             className="sound-wave"
             onStop={this.onAudioChange}
             strokeColor="#000000"
-            backgroundColor="#FF4081" />
-          <button onClick={this.startRecording} type="button">Start</button>
-          <button onClick={this.stopRecording} type="button">Stop</button>
+            backgroundColor="#FF4081"
+          />
+          <div className="inputBar">
+            <button
+              className="icons"
+              onClick={this.startRecording}
+              type="button"
+            >
+              <MaterialIcon
+                icon="settings_voice"
+                size="medium"
+                color="#336600"
+              />
+            </button>
+            <button
+              className="icons"
+              onClick={this.stopRecording}
+              type="button"
+            >
+              <MaterialIcon icon="stop" size="medium" color="#cc0000" />
+            </button>
+          </div>
         </div>
       </div>
     );

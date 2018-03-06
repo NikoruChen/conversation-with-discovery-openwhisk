@@ -45,7 +45,7 @@ body {
 // }
 
 .hasAudio {
-  display: none
+  display: none;
 }
 
 // .AudioRecorder-remove {
@@ -53,5 +53,17 @@ body {
 // }
 
 .hasAudio {
-  display: none
+  display: none;
+}
+.icons {
+  height: 30px;
+  border: 0px;
+  width: 10px;
+  outline: none;
+  padding-right: 3em;
+  padding-top: 0em;
+  padding-left: 0em;
+}
+.inputBar {
+  margin-left: 10px;
 }

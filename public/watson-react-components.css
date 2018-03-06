@@ -148,7 +148,7 @@ audio,
 canvas,
 progress,
 video {
-  display: inline-block;
+  display: none;
   vertical-align: baseline; }
 
 audio:not([controls]) {
@@ -312,7 +312,7 @@ body {
   font-weight: 400;
   line-height: 1.5; }
   body * + * {
-    margin-top: 1rem; }
+    margin-top: 0rem; }
 
 h1,
 .base--h1 {
