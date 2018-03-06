@@ -248,7 +248,9 @@ class App extends Component {
         messageObjectList: [...this.state.messageObjectList, msgObj]
       },
       () => {
-        // if (msgObj.position === 'left') {this.getSpeech(msgObj);}
+        if (msgObj.position === 'left') {
+          this.getSpeech(msgObj);
+        }
       }
     );
   }
