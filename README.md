@@ -3,7 +3,6 @@
 
 This application shows the capabilities of Watson Conversation and Discovery services to work together to find answers on a given query. In this app, the user is chatting with a virtual assistant, giving it commands in plain English such as "What mice are good for gaming," "Find me a Miscrosoft Mouse," or "Can you recommend a light-weighted mouse." The results are returned based on the Discovery relavancy scores. 
 
-This demo is a reworking of [a previous one](https://github.com/watson-developer-cloud/conversation-with-discovery) but with an OpenWhisk back-end and React front-end. OpenWhisk is IBM's "serverless" offering, allowing users to upload functions to the cloud, call them via REST API, and pay only by the millisecond of usage.
 
 ## Table of Contents
 * [How it Works](#how-it-works)
