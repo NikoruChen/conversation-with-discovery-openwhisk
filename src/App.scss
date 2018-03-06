@@ -1,30 +1,41 @@
 $app-intro-color: rgb(28, 54, 18);
 
-
-html, body {
-    height: 100%;
+html,
+body {
+  height: 100%;
 }
 
 #root {
-    margin: 0;
-    height: 100%;
+  margin: 0;
+  height: 100%;
 }
 
 .app-wrapper {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-    align-content: stretch;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
 }
 
+.conversation__intro {
+  font-family: cursive;
+}
+.logo {
+  align-self: center;
+}
+.reviewButton {
+  height: 30px;
+  width: 130px;
+  font-size: 13px;
+}
 .conversation {
-    flex: 1;
+  flex: 1;
 
-    &__intro {
-        text-align: center;
-        color: $app-intro-color;
-    }
+  &__intro {
+    text-align: center;
+    color: $app-intro-color;
+  }
 }

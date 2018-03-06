@@ -5,27 +5,27 @@ $result-link-color: rgb(201, 212, 4);
 $result-border-color: rgb(241, 226, 255);
 
 .result {
-    background-color: $result-background-color;
-    padding: 1rem;
-    width: 50%;
-    border: 1px solid $result-border-color;
-    border-radius: 3px;
+  padding: 1rem;
+  width: 50%;
+  border: 1px solid #336600;
+  border-radius: 5px;
 
-    &__title {
-        color: $result-title-color;
-        font-weight: bold;
-    }
+  &__title {
+    color: $result-title-color;
+    font-weight: bold;
+  }
 
-    &__preview {
-        color: $result-preview-color;
-    }
+  &__preview {
+    color: $result-preview-color;
+  }
 
-    &__link {
-        color: $result-link-color;
-    }
+  &__link {
+    color: $result-link-color;
+    font-size: 13px;
+  }
 }
 
 .result + .result {
-    margin-top: 0rem;
-    border-top: none;
+  margin-top: 0rem;
+  border-top: none;
 }
